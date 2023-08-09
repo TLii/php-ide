@@ -37,7 +37,7 @@ jobs:
         echo $version_number > "${{ env.cidata }}/version_number.txt"
 
         echo "Current version recorded."
-        github_hash=$(git rev-parse --short "${{ github_sha }}")
+        github_hash=$(git rev-parse --short "${{ github.sha }}")
         echo "github_hash=$github_hash" >> "$GITHUB_ENV"
         echo "version_number=$version_number")" >> "$GITHUB_ENV"
 
