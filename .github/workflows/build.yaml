@@ -8,12 +8,13 @@ on:
       - master
       - develop
 
-jobs:
 
-  env:
-    cidata: .ci
-    appname: php-ide
-    branch: ${{ github.ref_name }}
+env:
+  cidata: .ci
+  appname: php-ide
+  branch: ${{ github.ref_name }}
+
+jobs:
 
   build:
     runs-on: ubuntu-latest
