@@ -7,7 +7,7 @@ if [[ -n ${PASSWORD} ]]; then
   echo "Using provided password for user."
 else
   PASSWORD=$(C_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 12)
-  echo "Setting user php-ide's password to ${PASSWORD}..."
+  echo "Setting user php-ide's password to ${PASSWORD}... Remember, this changes every time container is started."
 fi
 
 sudo echo "ide-user:${PASSWORD}" | chpasswd
