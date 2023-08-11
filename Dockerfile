@@ -50,24 +50,18 @@ RUN curl https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-## CREATE USER ##
-ENV USER=phpide \
-    UID=1000 \
-    GID=1000 \
-    PASSWORD=phpide
+RUN groupadd --gid=1000 ide-user && \
+    useradd ide-user --uid=1000 --gid=1000 --create-home --shell=/bin/bash --groups=sudo,ide-user && \
+    mkdir -p /home/ide-user/.ssh && \
+    chown -R ide-user:ide-user /home/ide-user/.ssh && \
+    chmod 700 /home/ide-user/.ssh && \
+    echo "ide-user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-RUN groupadd --gid=${GID} ${USER} && \
-    useradd ${USER} --uid=${UID} --gid=${GID} --create-home --shell=/bin/bash --groups=sudo && \
-    mkdir -p /home/${USER}/.ssh && \
-    chown -R ${USER}:${USER} /home/${USER}/.ssh && \
-    chmod 700 /home/${USER}/.ssh && \
-    echo "${USER} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-VOLUME /home/${USER}
-
-USER ${USER}
-WORKDIR /home/${USER}
-
+VOLUME /home/ide-user
 COPY fs /
+
+USER ide-user
+WORKDIR /home/ide-user
+
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sleep infinity"]
