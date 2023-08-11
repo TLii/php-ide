@@ -3,10 +3,15 @@
 echo "Starting SSH server..."
 sudo ssh-keygen -A
 sudo /etc/init.d/ssh start
+if [[ -n ${PASSWORD} ]]; then
+  echo "Using provided password for user."
+else
+  PASSWORD=$(C_ALL=C tr -dc A-Za-z0-9 </dev/urandom | head -c 12)
+  echo "Setting user php-ide's password to ${PASSWORD}..."
+fi
 
-# Set user password and SSH key, if provided
-echo "Setting user php-ide's password to ${PASSWORD}..."
 sudo echo "ide-user:${PASSWORD}" | chpasswd
+
 if [[ -n ${SSH-KEY} ]]; then
   echo "${SSH-KEY}" > /home/ide-user/.ssh/authorized_keys
   chown ide-user:ide-user /home/ide-user/.ssh/authorized_keys
