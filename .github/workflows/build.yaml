@@ -39,7 +39,7 @@ jobs:
         echo "Current version recorded."
         github_hash=$(git rev-parse --short "${{ github.sha }}")
         echo "github_hash=$github_hash" >> "$GITHUB_ENV"
-        echo "version_number=$version_number")" >> "$GITHUB_ENV"
+        echo "version_number=$version_number" >> "$GITHUB_ENV"
 
 
     - name: Commit changed version number and changed ci values
