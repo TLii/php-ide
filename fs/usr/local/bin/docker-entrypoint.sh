@@ -9,7 +9,8 @@ else
   echo "Setting user php-ide's password to ${PASSWORD}... Remember, this changes every time container is started."
 fi
 
-sudo echo "vscode:${PASSWORD}" | chpasswd
+sudo echo "vscode:${PASSWORD}" | sudo chpasswd
+sudo mkdir /run/sshd
 
 if [[ -n ${SSH-KEY} ]]; then
   echo "${SSH-KEY}" > /home/vscode/.ssh/authorized_keys
