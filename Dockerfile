@@ -50,8 +50,7 @@ RUN curl https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-RUN groupadd --gid=1000 vscode && \
-    useradd vscode --uid=1000 --gid=1000 --create-home --shell=/bin/bash --groups=sudo,vscode && \
+RUN usermod -aG sudo,vscode vscode && \
     mkdir -p /home/vscode/.ssh && \
     chown -R vscode:vscode /home/vscode/.ssh && \
     chmod 700 /home/vscode/.ssh && \
