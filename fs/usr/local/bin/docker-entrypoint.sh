@@ -10,12 +10,12 @@ else
   echo "Setting user php-ide's password to ${PASSWORD}... Remember, this changes every time container is started."
 fi
 
-sudo echo "ide-user:${PASSWORD}" | chpasswd
+sudo echo "vscode:${PASSWORD}" | chpasswd
 
 if [[ -n ${SSH-KEY} ]]; then
-  echo "${SSH-KEY}" > /home/ide-user/.ssh/authorized_keys
-  chown ide-user:ide-user /home/ide-user/.ssh/authorized_keys
-  chmod 600 /home/ide-user/.ssh/authorized_keys
+  echo "${SSH-KEY}" > /home/vscode/.ssh/authorized_keys
+  chown vscode:vscode /home/vscode/.ssh/authorized_keys
+  chmod 600 /home/vscode/.ssh/authorized_keys
 fi
 
 # Run any custom startup scripts

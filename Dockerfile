@@ -1,7 +1,7 @@
 # This image is used to run PHP IDEs (e.g. PhpStorm) in a containerized environment.
 # Included: PHP, Composer, Helm, Docker CLI, SSH server, xdebug, phpunit
 
-FROM debian:bookworm
+FROM mcr.microsoft.com/devcontainers/base:debian-12
 EXPOSE 22
 
 ## FUNDAMENTALS ##
@@ -50,18 +50,17 @@ RUN curl https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-RUN groupadd --gid=1000 ide-user && \
-    useradd ide-user --uid=1000 --gid=1000 --create-home --shell=/bin/bash --groups=sudo,ide-user && \
-    mkdir -p /home/ide-user/.ssh && \
-    chown -R ide-user:ide-user /home/ide-user/.ssh && \
-    chmod 700 /home/ide-user/.ssh && \
-    echo "ide-user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN groupadd --gid=1000 vscode && \
+    useradd vscode --uid=1000 --gid=1000 --create-home --shell=/bin/bash --groups=sudo,vscode && \
+    mkdir -p /home/vscode/.ssh && \
+    chown -R vscode:vscode /home/vscode/.ssh && \
+    chmod 700 /home/vscode/.ssh && \
+    echo "vscode ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-VOLUME /home/ide-user
+VOLUME /sources
 COPY fs /
 
-USER ide-user
-WORKDIR /home/ide-user
+WORKDIR /home/vscode
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sleep infinity"]
