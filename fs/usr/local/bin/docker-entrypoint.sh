@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Starting SSH server..."
 sudo ssh-keygen -A
-sudo /etc/init.d/ssh start
+
 if [[ -n ${PASSWORD} ]]; then
   echo "Using provided password for user."
 else
