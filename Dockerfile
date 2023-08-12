@@ -62,4 +62,4 @@ COPY fs /
 WORKDIR /home/vscode
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["sleep infinity"]
+CMD ["/usr/sbin/sshd","-D"]
