@@ -60,6 +60,6 @@ VOLUME /sources
 COPY fs /
 
 WORKDIR /home/vscode
-USER vscode
+USER 1000
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["sudo", "/usr/sbin/sshd","-D"]
