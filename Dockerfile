@@ -1,27 +1,7 @@
 # This image is used to run PHP IDEs (e.g. PhpStorm) in a containerized environment.
 # Included: PHP, Composer, Helm, Docker CLI, SSH server, xdebug, phpunit
 
-FROM mcr.microsoft.com/devcontainers/base:debian-12
-EXPOSE 22
-
-## FUNDAMENTALS ##
-# Install base system
-RUN apt-get update && apt-get install --no-install-recommends -y \
-      openssh-server \
-      vim \
-      ca-certificates \
-      curl \
-      apt-transport-https \
-      git \
-      gnupg \
-      unzip \
-      lsb-release \
-      sudo \
-      coreutils
-
-COPY fs /
-
-RUN chown 1000 /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
+FROM harbor.pilvity.online/remote-ide/debian-base:latest
 
 # Install PHP and xdebug
 RUN apt-get install --no-install-recommends -y \
@@ -53,16 +33,3 @@ RUN curl https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-
-RUN usermod -aG sudo,vscode vscode && \
-    mkdir -p /home/vscode/.ssh && \
-    chown -R vscode:vscode /home/vscode/.ssh && \
-    chmod 700 /home/vscode/.ssh && \
-    echo "vscode ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-VOLUME /home/vscode
-
-WORKDIR /home/vscode
-USER 1000
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["sudo", "/usr/sbin/sshd","-D"]
