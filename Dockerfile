@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 COPY fs /
 
-RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
+RUN chown 1000 /usr/local/bin/docker-entrypoint.sh && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Install PHP and xdebug
 RUN apt-get install --no-install-recommends -y \
