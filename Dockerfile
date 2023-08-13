@@ -19,6 +19,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
       sudo \
       coreutils
 
+COPY fs /
+
+RUN chmod 777 /usr/local/bin/docker-entrypoint.sh
+
 # Install PHP and xdebug
 RUN apt-get install --no-install-recommends -y \
     php-cli \
@@ -56,8 +60,7 @@ RUN usermod -aG sudo,vscode vscode && \
     chmod 700 /home/vscode/.ssh && \
     echo "vscode ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-VOLUME /sources
-COPY fs /
+VOLUME /home/vscode
 
 WORKDIR /home/vscode
 USER 1000
