@@ -62,7 +62,7 @@ jobs:
     - name: Determine tags
       run: |
         if [[ ${{ env.branch }} == 'master' ]]; then
-          tags="${{ env.branch }}-latest, ${{ env.branch }}, ${{ env.version_number }}, ${{ env.github_hash }}, ${{ github.sha }}"
+          tags="latest, ${{ env.branch }}-latest, ${{ env.branch }}, ${{ env.version_number }}, ${{ env.github_hash }}, ${{ github.sha }}"
           addlatest="true"
         else
           tags="${{ env.branch }}-latest, ${{ env.branch }}, ${{ env.version_number }}, ${{ env.github_hash }}, ${{ github.sha }}"
