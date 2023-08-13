@@ -13,9 +13,9 @@ sudo echo "vscode:${PASSWORD}" | sudo chpasswd
 sudo mkdir /run/sshd
 
 if [[ -n ${SSH-KEY} ]]; then
-  echo "${SSH-KEY}" > /home/vscode/.ssh/authorized_keys
-  chown vscode:vscode /home/vscode/.ssh/authorized_keys
-  chmod 600 /home/vscode/.ssh/authorized_keys
+  sudo echo "${SSH-KEY}" > /home/vscode/.ssh/authorized_keys
+  sudo chown vscode:vscode /home/vscode/.ssh/authorized_keys
+  sudo chmod 600 /home/vscode/.ssh/authorized_keys
 fi
 
 # Run any custom startup scripts
