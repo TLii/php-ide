@@ -30,7 +30,8 @@ jobs:
         [[ ! -d ${{ env.cidata }} ]] && mkdir -p ${{ env.cidata }}
 
         if [[ -f ${{ env.cidata }}/version_number ]]; then
-          version_number=$(cat "${{ env.cidata }}/version_number.txt")+1
+          version_number=$(cat "${{ env.cidata }}/version_number.txt")
+          version_number+=1
         else
           version_number=1
         fi
