@@ -1,7 +1,7 @@
 # This image is used to run PHP IDEs (e.g. PhpStorm) in a containerized environment.
 # Included: PHP, Composer, Helm, Docker CLI, SSH server, xdebug, phpunit
 
-FROM harbor.pilvity.online/remote-ide/debian-base:latest
+FROM tliin/debian-ide-base:latest
 ARG node_major=18
 # Install PHP
 RUN apt-get install --no-install-recommends -y \
