@@ -2,8 +2,8 @@
 # Included: PHP, Composer, Helm, Docker CLI, SSH server, xdebug, phpunit
 
 FROM harbor.pilvity.online/remote-ide/debian-base:latest
-
-# Install PHP and xdebug
+ARG node_major=18
+# Install PHP
 RUN apt-get install --no-install-recommends -y \
     php-cli \
     php-curl \
@@ -12,7 +12,8 @@ RUN apt-get install --no-install-recommends -y \
     php-zip \
     php-pear \
     php-bcmath \
-    phpunit
+    phpunit \
+    shellcheck
 
 
 ## SETUP ADDITIONAL TOOLS ##
@@ -30,6 +31,13 @@ RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor |  tee /usr/share
 RUN curl https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 -o /usr/local/bin/hadolint && \
     chmod +x /usr/local/bin/hadolint
 
+# Install node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_${node_major}.x | bash - &&\
+    apt-get install -y nodejs
+
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# Install more tools
+RUN npm install eslint;
