@@ -30,13 +30,16 @@ jobs:
         [[ ! -d ${{ env.cidata }} ]] && mkdir -p ${{ env.cidata }}
 
         if [[ -f ${{ env.cidata }}/version_number ]]; then
-          version_number=$(cat "${{ env.cidata }}/version_number.txt")
-          version_number+=1
+          version_number=$(cat "${{ env.cidata }}/version_number.txt")+1
+          echo "Version number found. Incrementing."
+          echo "Current version is $version_number"
         else
           version_number=1
+          echo "No version number found. Starting at 1."
         fi
-        echo $version_number > "${{ env.cidata }}/version_number.txt"
 
+        echo $version_number > ${{ env.cidata }}/version_number.txt
+        echo "Writing $version_number to ${{ env.cidata }}/version_number.txt"
         echo "Current version recorded."
         github_hash=$(git rev-parse --short "${{ github.sha }}")
         echo "github_hash=$github_hash" >> "$GITHUB_ENV"
@@ -45,12 +48,12 @@ jobs:
 
     - name: Commit changed version number and changed ci values
       id: commit
-      if: ${{ github.version_changed == 'true' }}
       run: |
         git config --local user.email "github-actions@github.com"
         git config --local user.name "github-actions"
         git commit -am "chore(Version bump)"
-        if [-z "$(git status --porcelain)"]; then
+        changes="$(git status --porcelain)"
+        if [[ -z $changes ]]; then
           # If no files were changed, there's nothing to push.
           echo "push=false" >> "$GITHUB_ENV"
         else
@@ -84,7 +87,6 @@ jobs:
         addLatest: ${{ env.addlatest }}
 
     - name: Push changed version commit
-      if: ${{ github.push == 'true' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
