@@ -3,7 +3,7 @@
 
 FROM tliin/debian-ide-base:latest
 ARG node_major=18
-
+USER root
 # Install PHP
 RUN apt-get install --no-install-recommends -y \
     php-cli \
@@ -49,3 +49,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Run npm installer
 RUN npm install eslint;
+USER 1000
